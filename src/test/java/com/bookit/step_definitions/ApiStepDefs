@@ -19,7 +19,7 @@ import java.util.Map;
 import static io.restassured.RestAssured.*;
 
 public class ApiStepDefs {
-    String token;
+    String token = "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTUxNiIsImF1ZCI6InRlYWNoZXIifQ.saFcTsRyMJQj1e8jhya1zpxngBggh5fC3lGsGyBCrQs";
     Response response;
     String emailGlobal;
     String studentEmail;
