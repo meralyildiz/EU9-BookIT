@@ -17,9 +17,9 @@ public class DBUtils {
      *
      */
     public static void createConnection() {
-        String url = "jdbc:postgresql://room-reservation-qa2.cxvqfpt4mc2y.us-east-1.rds.amazonaws.com/room_reservation_qa2?:5432/room_reservation_qa2:5432/postgres";
-        String username = "qa_user";
-        String password = "Cybertek11!";
+        String url = Environment.DB_URL;
+        String username = Environment.DB_USERNAME;
+        String password = Environment.DB_PASSWORD;
         try {
             connection = DriverManager.getConnection(url, username, password);
         } catch (SQLException e) {

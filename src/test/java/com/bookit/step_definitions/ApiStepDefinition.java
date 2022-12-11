@@ -4,6 +4,7 @@ import com.bookit.pages.SelfPage;
 import com.bookit.utilities.BookItApiUtil;
 import com.bookit.utilities.ConfigurationReader;
 import com.bookit.utilities.DBUtils;
+import com.bookit.utilities.Environment;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -40,7 +41,7 @@ public class ApiStepDefinition {
                 .and()
                 .header("Authorization", token)
                 .when()
-                .get(ConfigurationReader.get("base_url") +"/api/users/me");
+                .get(Environment.BASE_URL +"/api/users/me");
     }
     @Then("status code should be {int}")
     public void status_code_should_be(int statusCode) {
@@ -146,7 +147,7 @@ public class ApiStepDefinition {
                 .and().header("Authorization", token)
                 .log().all()
                 .when()
-                .post(ConfigurationReader.get("base_url")+path)
+                .post(Environment.BASE_URL+path)
                 .then().log().all().extract().response();
 
     }

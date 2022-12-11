@@ -13,7 +13,7 @@ public class BookItApiUtil {
                 .queryParam("email", email)
                 .queryParam("password", password)
                 .when()
-                .get(ConfigurationReader.get("base_url") + "/sign");
+                .get(Environment.BASE_URL + "/sign");
 
         String token = response.path("accessToken");
 
@@ -29,17 +29,63 @@ public class BookItApiUtil {
         int idToDelete = given().contentType(ContentType.JSON)
                 .and().header("Authorization", studentToken)
                 .when()
-                .get(ConfigurationReader.get("base_url")+"/api/users/me")
+                .get(Environment.BASE_URL+"/api/users/me")
                 .then().statusCode(200).extract().jsonPath().getInt("id");
 
 
         //3. sen a delete request as teacher to api/students/{id} endpoint to delete the student
-        String teacherToken = BookItApiUtil.generateToken(ConfigurationReader.get("teacher_email"), ConfigurationReader.get("teacher_password") );
+        String teacherToken = BookItApiUtil.generateToken(Environment.TEACHER_EMAIL, Environment.TEACHER_PASSWORD );
         given().pathParam("id", idToDelete)
                 .and().header("Authorization", teacherToken)
                 .when()
-                .delete(ConfigurationReader.get("base_url")+"/api/students/{id}")
+                .delete(Environment.BASE_URL +"/api/students/{id}")
                 .then().statusCode(204);
+    }
+
+    //teacher , student-member,student-leader
+    //it will take user info from conf.properties
+    public static String getTokenByRole(String role){
+        //switch,if make sure you get correct user info
+        //send request/get token/ return token
+        String email, pass;
+
+        switch (role) {
+
+            case "teacher":
+                email = Environment.TEACHER_EMAIL;
+                pass = Environment.TEACHER_PASSWORD;
+                break;
+            case "student-member":
+                email = Environment.MEMBER_EMAIL;
+                pass = Environment.MEMBER_PASSWORD;
+                break;
+
+            case "student-leader":
+                email = Environment.LEADER_EMAIL;
+                pass = Environment.LEADER_PASSWORD;
+                break;
+
+            default:
+                throw new IllegalStateException("Unexpected value: " + role);
+        }
+
+
+            String accessToken =
+                    given()
+                            .accept(ContentType.JSON)
+                            .queryParams("email",email,"password",pass)
+                            .when()
+                            .get(Environment.BASE_URL+"/sign")
+                            .then()
+                            .statusCode(200)
+                            .extract().jsonPath().getString("accessToken");
+
+        System.out.println(role+":"+accessToken);
+        return "Bearer " + accessToken;
+
+
+
+
     }
 
 
