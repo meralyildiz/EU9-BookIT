@@ -161,7 +161,8 @@ public class ApiStepDefinition {
     }
 
     @Given("I logged Bookit api as {string}")
-    public void i_logged_Bookit_api_as(String string) {
+    public void i_logged_Bookit_api_as(String role) {
+        token = BookItApiUtil.getTokenByRole(role);
 
     }
 
